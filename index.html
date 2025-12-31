@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>PharmaSpot</title>
+    <link href="assets/dist/css/bundle.min.css" rel="stylesheet" type="text/css" />
+</head>
+<style id="cart-style-tweaks">
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        overflow: visible;
+    }
+
+    #main_app {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow: visible;
+    }
+
+    #main_app .container {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .view-section {
+        flex: 1;
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+    }
+
+    .app-shell {
+        display: flex;
+        min-height: 100vh;
+        background: #f6f7fb;
+    }
+
+    .module-sidebar {
+        width: 240px;
+        background: #0d6efd;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .module-sidebar h4 {
+        margin-bottom: 16px;
+        text-transform: uppercase;
+        font-size: 14px;
+        letter-spacing: 0.08em;
+    }
+
+    .module-sidebar button {
+        margin-bottom: 10px;
+        text-align: left;
+        border-radius: 8px;
+        padding: 10px 14px;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.15);
+        border: none;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .module-sidebar button.active,
+    .module-sidebar button:hover {
+        background: rgba(255, 255, 255, 0.35);
+    }
+
+    .module-sidebar .sidebar-footer {
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .module-workspace {
+        flex: 1;
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+        padding: 20px 30px;
+    }
+
+    .workspace-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 15px;
+    }
+
+    .workspace-actions .btn {
+        border-radius: 6px;
+    }
+
+    .table-wrapper {
+        flex: 1;
+        min-width: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-wrapper {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        padding: 30px;
+        height: 100%;
+        box-sizing: border-box;
+    }
+
+    #productList_wrapper,
+    #categoryList_wrapper,
+    #userList_wrapper {
+        width: 100%;
+    }
+
+    #productList {
+        width: 100% !important;
+        table-layout: fixed;
+    }
+
+    #productList th,
+    #productList td {
+        white-space: nowrap;
+    }
+
+    #productList td:nth-child(1) {
+        width: 16%;
+    }
+
+    #productList th:nth-child(2),
+    #productList td:nth-child(2) {
+        width: 22%;
+    }
+
+    #productList th:nth-child(3),
+    #productList td:nth-child(3) {
+        width: 14%;
+    }
+
+    #productList th:nth-child(4),
+    #productList td:nth-child(4) {
+        width: 12%;
+    }
+
+    #productList th:nth-child(5),
+    #productList td:nth-child(5) {
+        width: 18%;
+    }
+
+    #productList th:nth-child(6),
+    #productList td:nth-child(6) {
+        width: 10%;
+    }
+
+    #productList td:nth-child(7),
+    #productList th:nth-child(7) {
+        width: 8%;
+    }
+
+    #productList th:last-child,
+    #productList td:last-child {
+        text-align: center;
+    }
+
+    #productsSection .row > .col-md-7,
+    #productsSection .row > .col-md-5 {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+    }
+
+    #productsSection .row {
+        display: flex;
+        gap: 20px;
+    }
+
+    #productsSection .card-box {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    #productsSection .table-wrapper {
+        max-height: 70vh;
+        min-height: 70vh;
+        overflow-y: auto;
+    }
+
+    #productsSection .form-wrapper {
+        max-height: 70vh;
+        min-height: 70vh;
+        overflow-y: auto;
+    }
+
+    #productsSection .table-wrapper table {
+        max-height: 60vh;
+        overflow-y: auto;
+        display: block;
+    }
+
+    #productDropdown,
+    #customerDropdown {
+        padding: 0;
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        max-height: none !important;
+        overflow-y: auto !important;
+    }
+
+    #productDropdown .product-search-item,
+    #customerDropdown .product-search-item {
+        padding: 10px 12px;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        border-bottom: 1px solid #ececec;
+        color: #333;
+    }
+
+    #productDropdown .product-search-item.active,
+    #customerDropdown .product-search-item.active {
+        background: #eef5ff;
+    }
+
+    #productDropdown .product-search-row,
+    #customerDropdown .product-search-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+    #productDropdown .product-search-name,
+    #customerDropdown .product-search-name {
+        font-weight: 600;
+        margin: 0;
+    }
+
+    #productDropdown .product-search-price {
+        font-weight: 600;
+        color: #0f9d58;
+        font-size: 13px;
+        margin-left: 8px;
+    }
+
+    #productDropdown .product-search-meta,
+    #customerDropdown .product-search-meta {
+        font-size: 12px;
+        color: #6c757d;
+        margin-top: 2px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    #productDropdown .stock-chip {
+        padding: 2px 6px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 11px;
+    }
+
+    #productDropdown .stock-ok { background: #e8f5e9; color: #0f9d58; }
+    #productDropdown .stock-low { background: #fff4e5; color: #d97706; }
+    #productDropdown .stock-out { background: #fdecea; color: #c53030; }
+</style>
+
+<body>
+    <div class="splash loading">
+        <img src="assets/images/logo.svg" />
+        <h1 class="pull-right pt-3"><i class="fa fa-spinner fa-spin"></i> Please wait...</h1>
+    </div>
+    <div id="login">
+        <div class="login-box">
+            <div id="load" class="login-box-body">
+                <center><img src="assets/images/logo.svg" /></center>
+                <form id="account">
+                    <div class="form-group">
+                        <input type="text" placeholder="Username" name="username" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" placeholder="Password" name="password" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-block btn-default">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="main_app">
+        <div class="app-shell">
+            <aside class="module-sidebar">
+                <h4>Modules</h4>
+                <button id="pointofsale" type="button">
+                    <i class="glyphicon glyphicon-shopping-cart"></i> Point of Sale
+                </button>
+                <button id="productModal" type="button">
+                    <i class="glyphicon glyphicon-barcode"></i> Products
+                </button>
+                <button id="transactions" type="button">
+                    <i class="glyphicon glyphicon-credit-card"></i> Transactions
+                </button>
+                <button id="reports" type="button">
+                    <i class="glyphicon glyphicon-stats"></i> Reports
+                </button>
+                <button id="categoryModal" type="button">
+                    <i class="glyphicon glyphicon-th"></i> Companies
+                </button>
+                <button id="usersModal" data-toggle="modal" data-target="#Users" type="button">
+                    <i class="glyphicon glyphicon-user"></i> Users
+                </button>
+                <button id="viewRefOrders" data-toggle="modal" data-target="#holdOrdersModal" type="button">
+                    <i class="fa fa-shopping-basket"></i> Open Tabs
+                </button>
+                <button id="viewCustomerOrders" data-toggle="modal" data-target="#customerModal" type="button" onclick="$(this).getCustomerOrders()">
+                    <i class="fa fa-shopping-cart"></i> Orders
+                </button>
+                <div class="sidebar-footer">
+                    <button id="settings" data-toggle="modal" data-target="#settingsModal" type="button">
+                        <i class="glyphicon glyphicon-cog"></i> Settings
+                    </button>
+                    <button type="button" title="My Profile" class="btn btn-default waves-effect waves-light" id="cashier">
+                        <i class="glyphicon glyphicon-user"></i> <span id="loggedin-user"></span>
+                    </button>
+                    <button id="log-out" type="button">
+                        <i class="glyphicon glyphicon-log-out"></i> Log out
+                    </button>
+                </div>
+            </aside>
+            <section class="module-workspace">
+                <div class="workspace-actions"></div>
+                <div id="companiesSection" class="m-t-20 view-section" style="display:none;">
+                    <div class="card-box">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <h3>Companies</h3>
+                                <div class="table-wrapper">
+                                    <table class="table table-bordered" id="categoryList">
+                                        <thead>
+                                            <tr>
+                                                <th>Company</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="category_list"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <h3>Add / Edit Company</h3>
+                                <div class="form-wrapper">
+                                    <form id="saveCategory">
+                                        <div class="form-group">
+                                            <label for="categoryName">Name</label>
+                                            <input type="text" name="name" class="form-control" id="categoryName" placeholder="Enter a company name" required>
+                                            <input type="hidden" name="id" id="category_id" value="">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-block">Save Company</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="productsSection" class="m-t-20 view-section">
+                    <div class="card-box">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <h3>Products</h3>
+                                <div class="table-wrapper">
+                                    <table class="table table-bordered" id="productList">
+                                        <thead>
+                                            <tr>
+                                                <th>Item</th>
+                                                <th>Name</th>
+                                                <th>Price</th>
+                                                <th>Stock</th>
+                                                <th>Expiry Date</th>
+                                                <th>Company</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="product_list"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-5 form-wrapper">
+                                <h3>Add / Edit Product</h3>
+                                <form id="saveProduct" encType="multipart/form-data">
+                                    <input type="hidden" name="id" id="product_id">
+                                    <input type="hidden" name="img" id="img">
+                                    <input type="hidden" name="remove" id="remove_img">
+                                    <div class="form-group">
+                                        <label for="category">Company</label>
+                                        <div class="input-group">
+                                            <select name="category" class="form-control" id="category"></select>
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-success btn-add-company">
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                        <small class="text-muted">Add a new company if it’s missing.</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="productName">Product Name</label>
+                                        <input type="text" required="required" name="name" parsley-trigger="change" placeholder="Enter a product name" class="form-control" id="productName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="product_price">Price</label>
+                                        <input type="text" required="required" name="price" placeholder="Price" class="form-control number-input" id="product_price">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="purchase_discount">Purchase Discount (%) from Supplier</label>
+                                        <input type="text" name="purchase_discount" placeholder="0" class="form-control number-input" id="purchase_discount">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sale_discount">Default Sale Discount (%)</label>
+                                        <input type="text" name="sale_discount" placeholder="0" class="form-control number-input" id="sale_discount">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="expirationDate">Expiry Date</label>
+                                        <input type="text" name="expirationDate" parsley-trigger="change" placeholder="dd/mm/yyyy" class="form-control" id="expirationDate" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="quantity">Stock</label>
+                                        <input type="number" name="quantity" placeholder="Available stock" class="form-control" id="quantity" min="0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="minStock">Minimum Stock</label>
+                                        <input type="number" name="minStock" placeholder="Minimum Stock" class="form-control" id="minStock" min="1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label><input type="checkbox" name="stock" id="stock"> Disable stock check </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="imagename"><span id="rmv_img" class="btn btn-xs btn-warning">Remove</span>
+                                        Picture </label>
+                                        <div id="current_img"></div>
+                                        <input type="file" name="imagename" id="imagename">
+                                    </div>
+                                    <input type="submit" id="submitProduct" class="btn btn-primary btn-block waves-effect waves-light">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="transactions_view" class="m-t-20 view-section" style="display:none;">
+                    <div class="row text-center m-t-20" id="totals">
+                        <div id="total_sales" class="col-md-3 py-2 bg-success">
+                            <h5>SALES</h5>
+                            <span id="counter">0</span>
+                        </div>
+                        <div id="total_transactions" class="col-md-3 py-2 bg-warning">
+                            <h5>TRANSACTIONS</h5>
+                            <span id="counter">0</span>
+                        </div>
+                        <div id="total_items" class="col-md-3 py-2 bg-info">
+                            <h5>ITEMS SOLD</h5>
+                            <span id="counter">0</span>
+                        </div>
+                        <div id="total_products" class="col-md-3 py-2 bg-success">
+                            <h5>PRODUCTS</h5>
+                            <span id="counter">0</span>
+                        </div>
+                    </div>
+                    <div class="row p-t-10 p-b-10 bg-white m-t-10 m-b-20">
+                        <h3 class="col-md-2">Transactions</h3>
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="till-addon">Till</span>
+                                <select id="tills" class="form-control" aria-describedby="till-addon"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="cashier-addon">Cashier</span>
+                                <select id="users" class="form-control" aria-describedby="cashier-addon"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="status-addon">Status</span>
+                                <select id="status" class="form-control">
+                                    <option value="1">Paid</option>
+                                    <option value="0">Unpaid</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="date-addon">Date</span>
+                                <div id="reportrange">
+                                    <i class="fa fa-calendar"></i>&nbsp;
+                                    <span></span>&nbsp;<i class="fa fa-caret-down"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4" id="productSales">
+                            <div class="card-box">
+                                <div class="card-title"><h4>Products</h4></div>
+                                <div class="card-body">
+                                    <table class="table tablesaw-enhanced table-responsive" id="productsSold">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Sold</th>
+                                                <th>Available</th>
+                                                <th>Sales</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="product_sales"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8" id="transactionDetails">
+                            <div class="card-box">
+                                <div class="card-title"><h4>Transaction Details</h4></div>
+                                <div class="card-body">
+                                    <table class="table table-striped table-bordered table-responsive" id="transactionList">
+                                        <thead>
+                                            <tr>
+                                                <th>Invoice</th>
+                                                <th>Date</th>
+                                                <th>Total</th>
+                                                <th>Paid</th>
+                                                <th>Change</th>
+                                                <th>Method</th>
+                                                <th>Till</th>
+                                                <th>Cashier</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="transaction_list"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="reportsSection" class="m-t-20 view-section" style="display:none;">
+                    <div class="row p-t-10 p-b-10 bg-white m-t-10 m-b-20">
+                        <h3 class="col-md-2">Profit Report</h3>
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <span class="input-group-addon">Start</span>
+                                <input type="text" id="profitStartDate" class="form-control" placeholder="DD/MM/YYYY" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <span class="input-group-addon">End</span>
+                                <input type="text" id="profitEndDate" class="form-control" placeholder="DD/MM/YYYY" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-addon">Company</span>
+                                <select id="profitCompanyFilter" class="form-control"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-right">
+                            <button class="btn btn-primary" onclick="$(this).calculateProfitAnalytics()">Calculate</button>
+                        </div>
+                    </div>
+                    <div class="row m-b-20">
+                        <div class="col-md-3">
+                            <div class="card-box">
+                                <div class="card-title"><h5>Purchase</h5></div>
+                                <div class="card-body"><h3 id="totalPurchaseAmount">0.00</h3></div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card-box">
+                                <div class="card-title"><h5>Sales</h5></div>
+                                <div class="card-body"><h3 id="totalSaleAmount">0.00</h3></div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card-box">
+                                <div class="card-title"><h5>Profit</h5></div>
+                                <div class="card-body"><h3 id="totalProfit">0.00</h3></div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card-box">
+                                <div class="card-title"><h5>Margin</h5></div>
+                                <div class="card-body"><h3 id="profitMargin">0%</h3></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="card-box">
+                                <div class="card-title"><h4>Company Summary</h4></div>
+                                <div class="card-body">
+                                    <table class="table table-striped" id="profitCompanyTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Company</th>
+                                                <th>Purchase</th>
+                                                <th>Sale</th>
+                                                <th>Profit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-box">
+                                <div class="card-title"><h4>Transactions</h4></div>
+                                <div class="card-body" id="profitTransactionsList"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="pos_view" class="m-t-20 view-section" style="display:none;">
+                    <div class="row m-t-20">
+                        <div class="col-md-12">
+                            <div class="card-box" id="card-box">
+                                <div class="row" style="margin-bottom: 10px; align-items: center;">
+                                    <div class="col-md-6 col-sm-12" style="margin-top: 5px;">
+                                        <div class="input-group" style="position: relative; width: 100%;">
+                                            <input type="text" id="customerSearch" class="form-control" placeholder="Search customer..." autocomplete="off" style="height: 40px;">
+                                            <div id="customerDropdown" class="dropdown-menu" style="position: absolute; top: 100%; left: 0; right: 0; display: none; max-height: 520px; overflow-y: auto; z-index: 1000; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+                                            </div>
+                                            <select name="" id="customer" class="form-control" style="display: none;"></select>
+                                            <span class="input-group-btn">
+                                                <button id="newCustomerModal" data-toggle="modal" data-target="#newCustomer" class="btn btn-success" style="height: 40px;"><i class="fa fa-plus"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12" style="margin-top: 5px;">
+                                        <div class="input-group" style="position: relative; width: 100%;">
+                                            <input type="text" id="productSearch" class="form-control" placeholder="Search product by name or category..." autocomplete="off" style="height: 40px;">
+                                            <div id="productDropdown" class="dropdown-menu" style="position: absolute; top: 100%; left: 0; right: 0; display: none; max-height: 520px; overflow-y: auto; z-index: 1000; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row p-t-10" id="cartTable">
+                                    <div class="col-md-12">
+                                        <div class="card-box">
+                                            <div class="card-title">
+                                                <div class="row">
+                                                    <div class="col-md-1"><strong>#</strong></div>
+                                                    <div class="col-md-2"><strong>Item</strong></div>
+                                                    <div class="col-md-2"><strong>Qty</strong></div>
+                                                    <div class="col-md-2"><strong>Discount</strong></div>
+                                                    <div class="col-md-2"><strong>Discount 2</strong></div>
+                                                    <div class="col-md-2"><strong>Price</strong></div>
+                                                    <div class="col-md-1"><strong>Action</strong></div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body" style="min-height: 250px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="m-t-10">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <strong>Total Item(s): <span id="total">0</span></strong>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <strong>Subtotal: <span id="price">0.00</span></strong>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <strong>Gross Price (inc <span id="taxInfo"></span>% Tax): <h3 id="gross_price" style="display: inline;">0.00</h3></strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row m-t-10">
+                                    <div class="col-md-12 text-right">
+                                        <button onclick="$(this).submitDueOrder(3);" type="button" class="btn btn-info waves-effect waves-light m-l-5 m-b-5">
+                                            <i class="fa fa-print"></i> Print
+                                        </button>
+                                        <button onclick="$(this).cancelOrder()" type="button" class="btn btn-danger waves-effect waves-light m-l-5 m-b-5">
+                                            <span class="btn-label"><i class="fa fa-ban"></i></span>Cancel
+                                        </button>
+                                        <button type="button" id="hold" class="btn btn-info waves-effect waves-light m-l-5 m-b-5">
+                                            <span class="btn-label"><i class="fa fa-hand-paper-o"></i></span>Hold
+                                        </button>
+                                        <button type="button" id="payButton" class="btn btn-success waves-effect waves-light m-l-5 m-b-5">
+                                            <span class="btn-label"><i class="fa fa-money"></i></span>Pay
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+        <div id="dueModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel">Hold Order</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="">
+                            <input type="text" id="refNumber" placeholder="Enter a reference" class="form-control">
+                        </form>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button data-val="1" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">1</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button data-val="2" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">2</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button data-val="3" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">3</button>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button data-val="4" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">4</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button data-val="5" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">5</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button data-val="6" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">6</button>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button data-val="7" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">7</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button data-val="8" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">8</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button data-val="9" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">9</button>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button data-val="0" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">0</button>
+                            </div>
+                            <div class="col-md-8">
+                                <button data-val="clear" data-isdue="true" class="btn btn-warning btn-lg btn-block keypad-btn">Clear</button>
+                            </div>
+                        </div>
+                        <br>
+                        <button type="button" class="btn btn-primary btn-block" onclick="$(this).submitDueOrder(0)">Save Hold</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="paymentModel" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">A-</button>
+                        <h4 class="modal-title">Payment</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="list-group" id="paymentMethods">
+                            <a href="#" class="list-group-item active" data-payment-type="1">Cash</a>
+                            <a href="#" class="list-group-item" data-payment-type="3">Card</a>
+                        </div>
+                        <div class="form-group">
+                            <label>Amount Paid (<span id="payment_curr"></span>)</label>
+                            <input type="number" id="payment" class="form-control" min="0" step="0.01" placeholder="0.00">
+                            <input type="hidden" id="paymentText" value="">
+                        </div>
+                        <div id="cardInfo" class="form-group">
+                            <label>Card Info</label>
+                            <input type="text" id="paymentInfo" class="form-control" placeholder="Last 4 digits / Ref (optional)">
+                        </div>
+                        <div class="form-group">
+                            <label>Change (<span id="change_curr"></span>)</label>
+                            <div id="change"></div>
+                        </div>
+                        <button type="button" id="confirmPayment" class="btn btn-success btn-block">Confirm Payment</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="orderModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="btn btn-sm btn-success" onclick="$(this).print()">Print</button><br>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body" id="viewTransaction"></div>
+                    <div class="alert alert-danger">
+                        Right-Click and Reload if you get stuck after cancelling a print.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="Products" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel">Products</h4>
+                    </div>
+                    <div class="modal-body p-20 p-r-40" id="all_products">
+                        <table class="table table-bordered" id="productList">
+                            <thead>
+                                <tr>
+                                    <th>Barcode</th>
+                                    <th>Item</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Expiry Date</th>
+                                    <th>Company</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="product_list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="Users" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel">Users</h4>
+                    </div>
+                    <div class="modal-body p-20 p-r-20">
+                        <table class="table table-bordered" id="userList">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="user_list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="Categories" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel">Categories</h4>
+                        <button type="button" class="btn btn-success pull-right btn-add-company" style="margin-top: -5px;">
+                            <i class="fa fa-plus"></i> Add Company
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-bordered" id="categoryList">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="category_list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="userModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel">Account Information</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="saveUser" data-parsley-validate>
+                            <input type="hidden" name="id" id="user_id">
+                            <div class="form-group">
+                                <label for="userName">Name*</label>
+                                <input type="text" required name="fullname" parsley-trigger="change" placeholder="Enter name" class="form-control" id="fullname">
+                            </div>
+                            <div class="form-group">
+                                <label for="userName">Username*</label>
+                                <input type="text" name="username" parsley-trigger="change" placeholder="Login Username" class="form-control" id="username">
+                            </div>
+                            <div class="form-group">
+                                <label for="userName">Password</label>
+                                <input type="password" name="password" parsley-trigger="change" placeholder="Password" class="form-control" id="password">
+                            </div>
+                            <div class="form-group">
+                                <label for="userName">Repeat Password</label>
+                                <input type="password" name="pass" parsley-trigger="change" placeholder="Repeat" class="form-control" id="pass">
+                            </div>
+                            <div class="perms">
+                                <h3 class="m-t-20">Permissions</h3>
+                                <hr>
+                                <div class="form-group">
+                                    <span><input type="checkbox" name="perm_products" id="perm_products"> Manage Products and Stock </span>
+                                </div>
+                                <div class="form-group">
+                                    <span><input type="checkbox" name="perm_categories" id="perm_categories"> Manage Product Categories </span>
+                                </div>
+                                <div class="form-group">
+                                    <span><input type="checkbox" name="perm_transactions" id="perm_transactions"> View Transactions </span>
+                                </div>
+                                <div class="form-group">
+                                    <span><input type="checkbox" name="perm_users" id="perm_users"> Manage Users and Permissions </span>
+                                </div>
+                                <div class="form-group">
+                                    <span><input type="checkbox" name="perm_settings" id="perm_settings"> Manage Settings </span>
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-primary btn-block waves-effect waves-light">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="holdOrdersModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myLargeModalLabel">Open Orders</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" id="holdOrderInput" placeholder="Search order by reference" class="holdOrderInput form-control">
+                        <br>
+                        <div class="row" id="renderHoldOrders">
+                            <p>Please wait <span class="dot"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="customerModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myLargeModalLabel">Customer Orders</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" id="holdCustomerOrderInput" placeholder="Search order by customer name" class="holdCustomerOrderInput form-control">
+                        <br>
+                        <div class="row" id="renderCustomerOrders">
+                            <p>Please wait <span class="dot"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="settingsModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel">Settings</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="app">Application</label>
+                                    <select name="app" id="app" class="form-control">
+                                        <option value="Standalone Point of Sale">Standalone Point of Sale</option>
+                                        <option value="Network Point of Sale Terminal">Network Point of Sale Terminal</option>
+                                        <option value="Network Point of Sale Server">Network Point of Sale Server</option>
+                                    </select>
+                                </div>
+                                <form id="net_settings_form">
+                                    <div class="form-group">
+                                        <label for="ip">Server IP Address*</label>
+                                        <input type="text" required placeholder="Enter the IP address of the admin computer." name="ip" class="form-control" id="ip">
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label for="till">Till Number*</label>
+                                            <input type="text" required placeholder="Enter a number" name="till" class="form-control" id="till">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="form-group">
+                                            <label for="mac">Hardware Identification Number </label>
+                                            <input type="text" required name="mac" class="form-control" id="mac" readonly="readonly">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="save_settings" type="submit" class="btn btn-success btn-block waves-effect waves-light" value="Save Settings">
+                                    </div>
+                                </form>
+                            </div>
+                            <form id="settings_form" encType="multipart/form-data">
+                                <input type="hidden" name="id" id="settings_id">
+                                <input type="hidden" name="img" id="logo_img">
+                                <input type="hidden" name="remove" id="remove_logo">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="userName">Store Name</label>
+                                                <input type="text" required name="store" class="form-control" id="store" placeholder="Cool Pharmacy">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="userName">Address Line 1</label>
+                                                <input type="text" required name="address_one" class="form-control" id="address_one" placeholder="123 Main Street, Building#">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="userName">Address Line 2</label>
+                                                <input type="text" required name="address_two" class="form-control" id="address_two" placeholder="City, Country">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="userName">Contact Number</label>
+                                                <input type="tel" name="contact" class="form-control" id="contact" placeholder="0800 111 000">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="userName">Vat Number</label>
+                                                <input type="text" name="tax" parsley-trigger="change" class="form-control number-input" id="tax">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="userName">Currency Symbol</label>
+                                                <input type="text" required name="symbol" class="form-control" id="symbol" minlength="1" maxlength="3" placeholder="USD">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="userName">Vat Percentage</label>
+                                                <div class="pull-left">
+                                                    <div class="col-md-6">
+                                                        <div class="input-group" style="width:130%">
+                                                            <input type="number" min="0" max="100" required name="percentage" class="form-control" id="percentage">
+                                                            <span class="input-group-addon">%</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br><br>
+                                            <div class="form-group">
+                                                <label><input type="checkbox" name="charge_tax" id="charge_tax"> Charge Vat</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="userName"><span id="rmv_logo" class="btn btn-xs btn-warning">Remove</span> Logo </label>
+                                                <div id="current_logo"></div>
+                                                <input type="file" name="imagename" id="logoname" accept=".jpg,.jpeg,.png,.webp">
+                                                <small class="text-gray">
+                                                    Max filesize: <strong>2MB</strong>; Allowed image types:<strong> jpeg, jpg, png or webp</strong>
+                                                </small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="userName">Receipt Footer</label>
+                                                <textarea name="footer" class="form-control" id="footer"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="save_settings" type="submit" class="btn btn-success btn-block waves-effect waves-light" value="Save Settings">
+                                    </div>
+                                </div>
+                            </form>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div id="newProduct" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel">New Product</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="saveProductModal" encType="multipart/form-data">
+                            <div class="form-group">
+                                <label for="modal_productName">Product Name</label>
+                                <input type="text" name="name" class="form-control" id="modal_productName" placeholder="Enter product name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="modal_product_price">Price</label>
+                                <input type="text" name="price" class="form-control number-input" id="modal_product_price" placeholder="Price">
+                            </div>
+                            <div class="form-group">
+                                <label for="modal_category">Company</label>
+                                <div class="input-group">
+                                    <select name="category" id="modal_category" class="form-control"></select>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-success btn-add-company">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                                <small class="text-muted">Add a new company if it’s missing.</small>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Save Product</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="newCategory" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel">New Company</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="saveCategory">
+                            <div class="form-group">
+                                <label for="categoryName">Name</label>
+                                <input type="text" name="name" class="form-control" id="categoryName" placeholder="Enter a company name" required>
+                                <input type="hidden" name="id" id="category_id" value="">
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Save Company</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="newCustomer" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="newCustomerLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="newCustomerLabel">New Customer</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="saveCustomer">
+                            <div class="form-group">
+                                <label for="userName">Name</label>
+                                <input type="text" class="form-control" id="userName" placeholder="Customer name">
+                            </div>
+                            <div class="form-group">
+                                <label for="emailAddress">Email</label>
+                                <input type="email" class="form-control" id="emailAddress" placeholder="Email address">
+                            </div>
+                            <div class="form-group">
+                                <label for="phoneNumber">Phone</label>
+                                <input type="text" class="form-control" id="phoneNumber" placeholder="Phone number">
+                            </div>
+                            <div class="form-group">
+                                <label for="userAddress">Address</label>
+                                <textarea class="form-control" id="userAddress" placeholder="Customer address"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-success btn-block">Save Customer</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script src="assets/dist/js/bundle.min.js"></script>
+</body>
+
+</html>

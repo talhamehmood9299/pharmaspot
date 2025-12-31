@@ -1,0 +1,45 @@
+# Logs
+logs/
+*.log
+*.log.*
+
+# Node
+node_modules/
+/.pnp
+.pnp.js
+
+# Testing / Coverage
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+.playwright/
+.playwright-mcp/
+
+# Build outputs
+dist/
+build/
+out/
+release/
+releases/
+.cache/
+
+# TypeScript
+*.tsbuildinfo
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Editors / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Misc
+*.swp
+*.swo
+*.seed
+
