@@ -185,6 +185,9 @@ if (auth == undefined) {
 
     $(".loading").hide();
 
+    // Ensure primary sidebar buttons are visible on startup
+    $("#pointofsale, #transactions, #reports").show();
+
     loadCategories();
     loadProducts();
     loadCustomers();
@@ -1956,7 +1959,6 @@ if (auth == undefined) {
       $("#reports").show();
       $("#pointofsale").show();
       $("#transactions_view").show();
-      $(this).hide();
     });
 
     $("#pointofsale").on("click", function () {
@@ -1965,7 +1967,6 @@ if (auth == undefined) {
       $("#reports").show();
       $("#transactions_view").hide();
       $("#productsSection, #reportsSection, #companiesSection").hide();
-      $(this).hide();
     });
 
     $("#reports").on("click", function () {
@@ -1973,7 +1974,6 @@ if (auth == undefined) {
       $("#reportsSection").show();
       $("#productsSection, #transactions_view, #pos_view, #companiesSection").hide();
       $("#pointofsale, #transactions").show();
-      $(this).hide();
       loadCategories();
       $(this).calculateProfitAnalytics();
     });
@@ -3260,7 +3260,7 @@ $.fn.viewTransaction = function (index) {
       $("#change").text("");
       $("#transactions_view, #productsSection, #reportsSection").hide();
       $("#pos_view").show();
-      $("#pointofsale").hide();
+      $("#pointofsale").show();
       $("#transactions").show();
       $("#reports").show();
       $(this).renderTable(cart);

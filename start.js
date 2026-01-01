@@ -38,6 +38,16 @@ function createWindow() {
 
     mainWindow.loadURL(`file://${path.join(__dirname, "index.html")}`);
 
+    // Once the renderer finishes loading, auto-open the POS view
+    try {
+        mainWindow.webContents.on('did-finish-load', () => {
+            try {
+                // Triggers the standard UI handler by simulating a click
+                menuController.handleClick('pointofsale');
+            } catch (_) { /* noop */ }
+        });
+    } catch (_) { /* noop */ }
+
     mainWindow.on("closed", () => {
         mainWindow = null;
     });
